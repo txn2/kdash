@@ -43,6 +43,17 @@ function validateEndpoint(endpoint) {
 }
 
 /**
+ * Validate the hex value
+ *
+ * @param hex
+ * @return {boolean}
+ */
+function isHex(hex) {
+    const a = parseInt(hex, 16);
+    return (a.toString(16) === hex);
+}
+
+/**
  * Get Metric from stored endpoint
  */
 function getMetric() {
@@ -125,7 +136,36 @@ document.onkeydown = function (evt) {
  * Generate the rules form
  */
 function createRulesForm() {
-    // @TODO create/populate from existing LocalStorage values
+    // Populate the form endpoint value if stored
+    const storedEndpoint = localStorage.getItem('endpoint');
+    if (storedEndpoint) {
+        const endpointInput = document.getElementById('endpoint');
+        endpointInput.value = storedEndpoint;
+    }
+    // Populate the form with existing rules
+    rulesContainer.innerHTML = '';
+    const rules = JSON.parse(localStorage.getItem('rules'));
+    if (rules && rules.length) {
+        rules.forEach(function (rule, idx) {
+            handleAddRule(null);
+            const ruleField = document.getElementById('rule-value-' + idx);
+            const hexField = document.getElementById('rule-hex-' + idx);
+            if (ruleField && hexField) {
+                ruleField.value = rule.num;
+                hexField.value = rule.hex;
+            }
+        });
+    } else {
+        handleAddRule(null);
+        const ruleField = document.getElementById('rule-value-0');
+        const hexField = document.getElementById('rule-hex-0');
+        if (ruleField && hexField) {
+            ruleField.value = '0';
+            hexField.value = '999999';
+        }
+    }
+
+    // Display the form
     ruleForm.classList.add('active');
 }
 
@@ -144,7 +184,9 @@ function closeRulesForm(evt) {
  * @param evt
  */
 function handleAddRule(evt) {
-    evt.preventDefault();
+    if (evt) {
+        evt.preventDefault();
+    }
 
     let idx = document.querySelectorAll('#rules-list .rule').length;
 
@@ -189,13 +231,14 @@ function storeRules(evt) {
         for (let i = 0; i < rulesTotal; i++) {
             const ruleValue = document.getElementById('rule-value-' + i).value;
             const hexValue = document.getElementById('rule-hex-' + i).value;
-            if (ruleValue && hexValue) {
+            if (ruleValue && hexValue && isHex(hexValue)) {
                 rulesArr.push({num: ruleValue, hex: hexValue});
             }
         }
     }
     rulesArr.sortOn('num');
     localStorage.setItem('rules', JSON.stringify(rulesArr));
+    ruleForm.classList.remove('active');
 }
 
 // Functionality
