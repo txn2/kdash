@@ -1,0 +1,14 @@
+body {
+    font-family: sans-serif;
+    color: white;
+    background-color: black;
+}
+
+.metric {
+    font-size: 30vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
