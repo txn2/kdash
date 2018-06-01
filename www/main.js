@@ -7,17 +7,37 @@ const rulesContainer = document.getElementById('rules-list');
 const addRuleBtn = document.getElementById('add-rule');
 const saveRulesBtn = document.getElementById('save-rules');
 const closeRulesFormBtn = document.getElementById('rules-close');
+let totalRules = 0;
 
-Array.prototype.sortOn = function (key) {
-    this.sort(function (a, b) {
-        if (a[key] < b[key]) {
-            return -1;
-        } else if (a[key] > b[key]) {
-            return 1;
+/**
+ * Compare values for array sorting
+ *
+ * @param key
+ * @param order
+ * @return {Function}
+ */
+function compareValues(key, order = 'asc') {
+    return function (a, b) {
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            return 0;
         }
-        return 0;
-    });
-};
+
+        const varA = (typeof a[key] === 'string') ?
+            a[key].toUpperCase() : a[key];
+        const varB = (typeof b[key] === 'string') ?
+            b[key].toUpperCase() : b[key];
+
+        let comparison = 0;
+        if (varA > varB) {
+            comparison = 1;
+        } else if (varA < varB) {
+            comparison = -1;
+        }
+        return (
+            (order === 'desc') ? (comparison * -1) : comparison
+        );
+    };
+}
 
 /**
  * Get endpoint value or reset it
@@ -204,8 +224,20 @@ function handleAddRule(evt) {
     fieldHex += '<input type="text" name="rule-hex-' + idx + '" id="rule-hex-' + idx + '" value="" placeholder="999999">';
     fieldHex += '</div>';
 
-    ruleDiv.innerHTML = fieldTotal + fieldHex;
+    // let remove = '<a id="rule-remove-' + idx + '" class="btn btn-remove-rule" href="">X</a>';
+    let remove = '';
+
+    ruleDiv.innerHTML = fieldTotal + fieldHex + remove;
     rulesContainer.appendChild(ruleDiv);
+    // const removeBtn = document.getElementById('rule-remove-' + idx);
+    // removeBtn.addEventListener('click', handleRemoveRule, false);
+    totalRules++;
+}
+
+function handleRemoveRule(evt) {
+    if (evt) {
+        evt.preventDefault();
+    }
 }
 
 /**
@@ -232,11 +264,12 @@ function storeRules(evt) {
             const ruleValue = document.getElementById('rule-value-' + i).value;
             const hexValue = document.getElementById('rule-hex-' + i).value;
             if (ruleValue && hexValue && isHex(hexValue)) {
-                rulesArr.push({num: ruleValue, hex: hexValue});
+                rulesArr.push({num: parseInt(ruleValue, 10), hex: hexValue});
             }
         }
     }
-    rulesArr.sortOn('num');
+    // Sort the rules in order and store
+    rulesArr.sort(compareValues('num'));
     localStorage.setItem('rules', JSON.stringify(rulesArr));
     ruleForm.classList.remove('active');
 }

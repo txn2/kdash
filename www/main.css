@@ -56,6 +56,13 @@ body {
     background-color: rgba(66,255,66,0.5);
 }
 
+.btn-remove-rule {
+    background-color: rgba(255,66,66,0.5);
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+
 .form-rules-container {
     display: block;
     position: absolute;
