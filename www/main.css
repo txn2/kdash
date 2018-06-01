@@ -16,6 +16,42 @@ body {
     align-items: center;
 }
 
+.metric.error {
+    font-size: 8vw;
+}
+
+.btn {
+    display: inline-block;
+    background-color: rgba(255,255,255,0.3);
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    margin: 0 0 8px 0;
+    padding: 5px 8px;
+    clear: both;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-close {
+    display: block;
+    background-color: rgba(255,255,255,0.7);
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+    text-align: center;
+    margin: 0 0 10px 0;
+    padding: 3px 0 0 0;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
 .form-rules-container {
     display: block;
     position: absolute;
@@ -41,6 +77,7 @@ body {
 }
 
 .form-rules-container fieldset {
+    background-color: rgba(255,255,255,0.1);
     margin: 0 auto 10px auto;
     padding: 1vw;
 }
@@ -52,6 +89,23 @@ body {
 
 .form-rules-container input[type="text"] {
     display: block;
+    font-size: 18px;
+    padding: 4px 6px;
+    border: 1px solid #999;
+    border-radius: 3px;
+}
+
+::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: #999;
+}
+
+::-ms-input-placeholder {
+    color: #999;
 }
 
 .rules {
@@ -62,7 +116,8 @@ body {
     display: block;
     background-color: rgba(255,255,255,0.1);
     margin: 0 0 10px 0;
-    padding: 5px 6px;
+    padding: 8px 12px;
+    border-radius: 3px;
 }
 
 .rule .field {

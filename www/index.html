@@ -5,11 +5,14 @@
 </head>
 <body>
 <div class="page">
+
     <div id="metric" class="metric">
         ?
     </div>
+
     <div id="form-rules-container" class="form-rules-container">
-        <a class="close" href="">X</a>
+        <a id="rules-close" class="btn-close" href="">X</a>
+
         <form id="form-rules">
             <fieldset>
                 <legend>Data Source</legend>
@@ -21,23 +24,25 @@
             <fieldset>
                 <legend>Rules</legend>
                 <p>Add rules to set color levels. Begin with 0. Add additional rules to set colors for each level.</p>
-                <div class="rules">
-                    <div class="rule">
+                <div id="rules-list" class="rules">
+                    <div id="rule-0" class="rule">
                         <div class="field total">
                             <label for="rule-value-0">Value</label>
-                            <input type="text" name="rule-value-0" id="rule-value-0" value="" placeholder="0">
+                            <input type="text" name="rule-value-0" id="rule-value-0" value="0" placeholder="0">
                         </div>
                         <div class="field hex">
                             <label for="rule-hex-0">Hex Color</label>
-                            <input type="text" name="rule-hex-0" id="rule-hex-0" value="" placeholder="999999">
+                            <input type="text" name="rule-hex-0" id="rule-hex-0" value="999999" placeholder="999999">
                         </div>
                     </div>
                 </div>
-                <a id="add-rule" class="add-rule" href="">Add Another Rule</a>
-                <button type="submit">Save Rules</button>
+                <a id="add-rule" class="btn add-rule" href="">Add Another Rule</a>
+                <br/>
+                <button id="save-rules" type="button" class="btn">Save Rules</button>
             </fieldset>
         </form>
     </div>
+
 </div>
 
 <script src="/axios.min.js"></script>
