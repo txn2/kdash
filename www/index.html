@@ -1,14 +1,46 @@
 <html>
-  <head>
+<head>
     <title>Dashboard 1.0</title>
     <link rel="stylesheet" type="text/css" href="/main.css">
-  </head>
-  <body>
-  <div id="metric">
-    ?
-  </div>
+</head>
+<body>
+<div class="page">
+    <div id="metric" class="metric">
+        ?
+    </div>
+    <div id="form-rules-container" class="form-rules-container">
+        <a class="close" href="">X</a>
+        <form id="form-rules">
+            <fieldset>
+                <legend>Data Source</legend>
+                <p>
+                    <label for="endpoint">Enter a source for data</label>
+                    <input type="text" name="endpoint" id="endpoint" value="" placeholder="http://source.com">
+                </p>
+            </fieldset>
+            <fieldset>
+                <legend>Rules</legend>
+                <p>Add rules to set color levels. Begin with 0. Add additional rules to set colors for each level.</p>
+                <div class="rules">
+                    <div class="rule">
+                        <div class="field total">
+                            <label for="rule-value-0">Value</label>
+                            <input type="text" name="rule-value-0" id="rule-value-0" value="" placeholder="0">
+                        </div>
+                        <div class="field hex">
+                            <label for="rule-hex-0">Hex Color</label>
+                            <input type="text" name="rule-hex-0" id="rule-hex-0" value="" placeholder="999999">
+                        </div>
+                    </div>
+                </div>
+                <a id="add-rule" class="add-rule" href="">Add Another Rule</a>
+                <button type="submit">Save Rules</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
 
-  <script src="/axios.min.js"></script>
-  <script src="/main.js"></script>
-  </body>
+<script src="/axios.min.js"></script>
+<script src="/main.js"></script>
+</body>
 </html>
