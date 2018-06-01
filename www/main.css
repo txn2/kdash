@@ -4,7 +4,7 @@ body {
     background-color: black;
 }
 
-.metric {
+#metric {
     font-size: 30vw;
     height: 100vh;
     display: flex;
