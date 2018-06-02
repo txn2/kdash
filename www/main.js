@@ -173,6 +173,7 @@ function createRulesForm() {
             if (ruleField && hexField) {
                 ruleField.value = rule.num;
                 hexField.value = rule.hex;
+                setHexChange('rule-hex-' + idx, rule.hex);
             }
         });
     } else {
@@ -182,6 +183,7 @@ function createRulesForm() {
         if (ruleField && hexField) {
             ruleField.value = '0';
             hexField.value = '999999';
+            setHexChange('rule-hex-0', '999999');
         }
     }
 
@@ -210,30 +212,77 @@ function handleAddRule(evt) {
 
     let idx = document.querySelectorAll('#rules-list .rule').length;
 
+    // Create a rule container
     let ruleDiv = document.createElement('div');
     ruleDiv.id = 'rule-' + idx;
     ruleDiv.classList.add('rule');
 
-    let fieldTotal = '<div class="field total">';
-    fieldTotal += '<label for="rule-value-' + idx + '">Minimum Value</label>';
-    fieldTotal += '<input type="text" name="rule-value-' + idx + '" id="rule-value-' + idx + '" value="" placeholder="0">';
-    fieldTotal += '</div>';
+    // Create number value label & input
+    const numDiv = document.createElement('div');
+    numDiv.className = 'field total';
+    const numLabel = document.createElement('label');
+    numLabel.setAttribute('for', 'rule-value-' + idx);
+    numLabel.innerHTML = 'Minimum Value';
+    const numInput = document.createElement('input');
+    numInput.setAttribute('type', 'text');
+    numInput.setAttribute('id', 'rule-value-' + idx);
+    numInput.setAttribute('name', 'rule-value-' + idx);
+    numInput.setAttribute('value', '');
+    numInput.setAttribute('placeholder', '0');
+    numDiv.appendChild(numLabel);
+    numDiv.appendChild(numInput);
 
-    let fieldHex = '<div class="field hex">';
-    fieldHex += '<label for="rule-hex-' + idx + '">Hex Color</label>';
-    fieldHex += '<input type="text" name="rule-hex-' + idx + '" id="rule-hex-' + idx + '" value="" placeholder="999999" maxlength="6">';
-    fieldHex += '</div>';
+    // Create hex value label & input
+    const hexDiv = document.createElement('div');
+    hexDiv.className = 'field hex';
+    const hexLabel = document.createElement('label');
+    hexLabel.setAttribute('for', 'rule-hex-' + idx);
+    hexLabel.innerHTML = 'Hex Color';
+    const hexInput = document.createElement('input');
+    hexInput.setAttribute('type', 'text');
+    hexInput.setAttribute('id', 'rule-hex-' + idx);
+    hexInput.setAttribute('name', 'rule-hex-' + idx);
+    hexInput.setAttribute('value', '');
+    hexInput.setAttribute('placeholder', '999999');
+    hexDiv.appendChild(hexLabel);
+    hexDiv.appendChild(hexInput);
+    hexInput.addEventListener('change', function(evt) {
+        setHexChange(this.id, this.value);
+    });
+
+    // Create a color icon
+    const colorDiv = document.createElement('div');
+    colorDiv.className = 'icon-hex-color';
 
     // let remove = '<a id="rule-remove-' + idx + '" class="btn btn-remove-rule" href="">X</a>';
-    let remove = '';
 
-    ruleDiv.innerHTML = fieldTotal + fieldHex + remove;
+    ruleDiv.appendChild(numDiv);
+    ruleDiv.appendChild(hexDiv);
+    ruleDiv.appendChild(colorDiv);
     rulesContainer.appendChild(ruleDiv);
+    setHexChange('rule-hex-' + idx, '999999');
     // const removeBtn = document.getElementById('rule-remove-' + idx);
     // removeBtn.addEventListener('click', handleRemoveRule, false);
     totalRules++;
 }
 
+/**
+ * Set hex color squares
+ *
+ * @param id
+ * @param hex
+ */
+function setHexChange(id, hex) {
+    const ruleDiv = document.getElementById(id).closest('.rule');
+    const hexIcon = document.getElementById(ruleDiv.id).querySelectorAll('.icon-hex-color');
+    hexIcon[0].style.backgroundColor = '#' + hex;
+}
+
+/**
+ * Remove rule from form
+ *
+ * @param evt
+ */
 function handleRemoveRule(evt) {
     if (evt) {
         evt.preventDefault();
