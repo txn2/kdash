@@ -7,7 +7,6 @@ const rulesContainer = document.getElementById('rules-list');
 const addRuleBtn = document.getElementById('add-rule');
 const saveRulesBtn = document.getElementById('save-rules');
 const closeRulesFormBtn = document.getElementById('rules-close');
-let totalRules = 0;
 
 /**
  * Compare values for array sorting
@@ -272,7 +271,6 @@ function handleAddRule(evt) {
     ruleDiv.appendChild(removeBtn);
     rulesContainer.appendChild(ruleDiv);
     setHexColor('rule-hex-' + idx, '999999');
-    totalRules++;
 }
 
 /**
