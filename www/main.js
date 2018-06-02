@@ -267,7 +267,7 @@ function handleAddRule(evt) {
     ruleDiv.appendChild(numDiv);
     ruleDiv.appendChild(hexDiv);
     ruleDiv.appendChild(colorDiv);
-    ruleDiv.appendChild(removeBtn);
+    //ruleDiv.appendChild(removeBtn);
     rulesContainer.appendChild(ruleDiv);
     setHexColor('rule-hex-' + idx, '999999');
     totalRules++;
