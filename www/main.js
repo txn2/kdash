@@ -173,7 +173,7 @@ function createRulesForm() {
             if (ruleField && hexField) {
                 ruleField.value = rule.num;
                 hexField.value = rule.hex;
-                setHexChange('rule-hex-' + idx, rule.hex);
+                setHexColor('rule-hex-' + idx, rule.hex);
             }
         });
     } else {
@@ -183,7 +183,7 @@ function createRulesForm() {
         if (ruleField && hexField) {
             ruleField.value = '0';
             hexField.value = '999999';
-            setHexChange('rule-hex-0', '999999');
+            setHexColor('rule-hex-0', '999999');
         }
     }
 
@@ -246,24 +246,44 @@ function handleAddRule(evt) {
     hexInput.setAttribute('placeholder', '999999');
     hexDiv.appendChild(hexLabel);
     hexDiv.appendChild(hexInput);
-    hexInput.addEventListener('change', function(evt) {
-        setHexChange(this.id, this.value);
+    hexInput.addEventListener('keyup', function(evt) {
+        handleHexChange(this.id, this.value, evt);
     });
 
     // Create a color icon
     const colorDiv = document.createElement('div');
     colorDiv.className = 'icon-hex-color';
 
-    // let remove = '<a id="rule-remove-' + idx + '" class="btn btn-remove-rule" href="">X</a>';
+    // Create a remove button (pending)
+    const removeBtn = document.createElement('a');
+    removeBtn.setAttribute('id', 'rule-remove-' + idx);
+    removeBtn.setAttribute('href', '');
+    removeBtn.className = 'btn btn-remove-rule';
+    removeBtn.innerText = 'X';
+    removeBtn.addEventListener('click', function(evt) {
+        handleRemoveRule(this.id, evt);
+    });
 
     ruleDiv.appendChild(numDiv);
     ruleDiv.appendChild(hexDiv);
     ruleDiv.appendChild(colorDiv);
+    ruleDiv.appendChild(removeBtn);
     rulesContainer.appendChild(ruleDiv);
-    setHexChange('rule-hex-' + idx, '999999');
-    // const removeBtn = document.getElementById('rule-remove-' + idx);
-    // removeBtn.addEventListener('click', handleRemoveRule, false);
+    setHexColor('rule-hex-' + idx, '999999');
     totalRules++;
+}
+
+/**
+ * Handle event for hex color icon changes
+ *
+ * @param id
+ * @param hex
+ * @param evt
+ */
+function handleHexChange(id, hex, evt = null) {
+    if (evt && isHex(hex)) {
+        setHexColor(id, hex);
+    }
 }
 
 /**
@@ -272,7 +292,7 @@ function handleAddRule(evt) {
  * @param id
  * @param hex
  */
-function setHexChange(id, hex) {
+function setHexColor(id, hex) {
     const ruleDiv = document.getElementById(id).closest('.rule');
     const hexIcon = document.getElementById(ruleDiv.id).querySelectorAll('.icon-hex-color');
     hexIcon[0].style.backgroundColor = '#' + hex;
@@ -281,9 +301,11 @@ function setHexChange(id, hex) {
 /**
  * Remove rule from form
  *
+ * @param id
  * @param evt
  */
-function handleRemoveRule(evt) {
+function handleRemoveRule(id, evt) {
+    //console.log('remove: ', id);
     if (evt) {
         evt.preventDefault();
     }
