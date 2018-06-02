@@ -69,8 +69,8 @@ function validateEndpoint(endpoint) {
  * @return {boolean}
  */
 function isHex(hex) {
-    const a = parseInt(hex, 16);
-    return (a.toString(16) === hex);
+    const re = /[0-9A-Fa-f]{6}/g;
+    return re.test(hex);
 }
 
 /**
@@ -215,13 +215,13 @@ function handleAddRule(evt) {
     ruleDiv.classList.add('rule');
 
     let fieldTotal = '<div class="field total">';
-    fieldTotal += '<label for="rule-value-' + idx + '">Value</label>';
+    fieldTotal += '<label for="rule-value-' + idx + '">Minimum Value</label>';
     fieldTotal += '<input type="text" name="rule-value-' + idx + '" id="rule-value-' + idx + '" value="" placeholder="0">';
     fieldTotal += '</div>';
 
     let fieldHex = '<div class="field hex">';
     fieldHex += '<label for="rule-hex-' + idx + '">Hex Color</label>';
-    fieldHex += '<input type="text" name="rule-hex-' + idx + '" id="rule-hex-' + idx + '" value="" placeholder="999999">';
+    fieldHex += '<input type="text" name="rule-hex-' + idx + '" id="rule-hex-' + idx + '" value="" placeholder="999999" maxlength="6">';
     fieldHex += '</div>';
 
     // let remove = '<a id="rule-remove-' + idx + '" class="btn btn-remove-rule" href="">X</a>';
@@ -271,6 +271,7 @@ function storeRules(evt) {
     // Sort the rules in order and store
     rulesArr.sort(compareValues('num'));
     localStorage.setItem('rules', JSON.stringify(rulesArr));
+    formatMetric(metric.innerText);
     ruleForm.classList.remove('active');
 }
 
