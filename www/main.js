@@ -219,7 +219,7 @@ function handleAddRule(evt) {
 
     // Create number value label & input
     const numDiv = document.createElement('div');
-    numDiv.className = 'field total';
+    numDiv.className = 'field-container total';
     const numLabel = document.createElement('label');
     numLabel.setAttribute('for', 'rule-value-' + idx);
     numLabel.innerHTML = 'Minimum Value';
@@ -229,12 +229,13 @@ function handleAddRule(evt) {
     numInput.setAttribute('name', 'rule-value-' + idx);
     numInput.setAttribute('value', '');
     numInput.setAttribute('placeholder', '0');
+    numInput.className = 'field num';
     numDiv.appendChild(numLabel);
     numDiv.appendChild(numInput);
 
     // Create hex value label & input
     const hexDiv = document.createElement('div');
-    hexDiv.className = 'field hex';
+    hexDiv.className = 'field-container hex';
     const hexLabel = document.createElement('label');
     hexLabel.setAttribute('for', 'rule-hex-' + idx);
     hexLabel.innerHTML = 'Hex Color';
@@ -244,6 +245,7 @@ function handleAddRule(evt) {
     hexInput.setAttribute('name', 'rule-hex-' + idx);
     hexInput.setAttribute('value', '');
     hexInput.setAttribute('placeholder', '999999');
+    hexInput.className = 'field hex';
     hexDiv.appendChild(hexLabel);
     hexDiv.appendChild(hexInput);
     hexInput.addEventListener('keyup', function(evt) {
@@ -254,7 +256,7 @@ function handleAddRule(evt) {
     const colorDiv = document.createElement('div');
     colorDiv.className = 'icon-hex-color';
 
-    // Create a remove button (pending)
+    // Create a remove button
     const removeBtn = document.createElement('a');
     removeBtn.setAttribute('id', 'rule-remove-' + idx);
     removeBtn.setAttribute('href', '');
@@ -267,7 +269,7 @@ function handleAddRule(evt) {
     ruleDiv.appendChild(numDiv);
     ruleDiv.appendChild(hexDiv);
     ruleDiv.appendChild(colorDiv);
-    //ruleDiv.appendChild(removeBtn);
+    ruleDiv.appendChild(removeBtn);
     rulesContainer.appendChild(ruleDiv);
     setHexColor('rule-hex-' + idx, '999999');
     totalRules++;
@@ -304,20 +306,29 @@ function setHexColor(id, hex) {
  * @param id
  * @param evt
  */
-function handleRemoveRule(id, evt) {
-    //console.log('remove: ', id);
+function handleRemoveRule(id, evt = null) {
     if (evt) {
         evt.preventDefault();
+    }
+    const ruleDiv = document.getElementById(id).closest('.rule');
+    const hexInput = document.getElementById(ruleDiv.id).querySelectorAll('input.hex');
+    if (hexInput) {
+        hexInput[0].value = '';
+        storeRules(false);
+        createRulesForm();
     }
 }
 
 /**
  * Store rules in LocalStorage
  *
+ * @param closeForm
  * @param evt
  */
-function storeRules(evt) {
-    evt.preventDefault();
+function storeRules(closeForm, evt = null) {
+    if (evt) {
+        evt.preventDefault();
+    }
 
     // Store the endpoint
     let endpoint = document.getElementById('endpoint').value;
@@ -343,12 +354,16 @@ function storeRules(evt) {
     rulesArr.sort(compareValues('num'));
     localStorage.setItem('rules', JSON.stringify(rulesArr));
     formatMetric(metric.innerText);
-    ruleForm.classList.remove('active');
+    if (closeForm) {
+        ruleForm.classList.remove('active');
+    }
 }
 
 // Functionality
 
 addRuleBtn.addEventListener('click', handleAddRule, false);
-saveRulesBtn.addEventListener('click', storeRules, false);
+saveRulesBtn.addEventListener('click', function(evt) {
+    storeRules(true, evt);
+});
 closeRulesFormBtn.addEventListener('click', closeRulesForm, false);
 getMetric();
