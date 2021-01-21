@@ -1,2 +1,2 @@
-FROM txn2/asws:1.2.1
+FROM txn2/asws:1.2.3
 COPY ./www/. /www
